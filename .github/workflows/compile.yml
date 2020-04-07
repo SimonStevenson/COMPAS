@@ -13,44 +13,33 @@ on:
       - Trying-out-CI
 
 jobs:
-#  build_ubuntu:
-#    runs-on: ubuntu-latest
-#
-#     steps:
-#     - uses: actions/checkout@v2
-#     - name: install_gsl
-#       run: npm 
-#     - name: install_boost
-#       run: npm i @boost/core #npm i boost
-#     - name: make
-#       run: make -j $(nproc)
-#     - name: make_clean
-#       run: make clean 
-#     - name: makefast
-#       run: make fast -j $(nproc)
-#     - name: run_compas
-#       run: ./COMPAS -n 1000 --random-seed 0
 
   build_macos:
     runs-on: macos-latest
     
     steps:
     - uses: actions/checkout@v2
-    - name: install_gsl
+    - name: Install GSL
       run: brew install gsl
-    - name: install_boost
+    - name: Install Boost
       run: brew install boost
-    - name: wherewe
+    - name: Print current working directory
       run: pwd
-    - name: changedirectory
+    - name: Change to source directory
       run: cd ./src
-    - name: make
+    - name: Print current working directory
+      run: pwd
+    - name: Make COMPAS
       run: make -j $(nproc)
-    - name: make_clean
+      working-directory: ./src
+    - name: Make clean
       run: make clean 
-    - name: makefast
+      working-directory: ./src
+    - name: Make fast COMPAS
       run: make fast -j $(nproc)
-    - name: run_compas
+      working-directory: ./src
+    - name: Run COMPAS
       run: ./COMPAS -n 1000 --random-seed 0
+      working-directory: ./src
 
   

@@ -25,6 +25,8 @@ jobs:
       run: sudo apt-get install g++
     - name: Install GSL
       run: sudo apt-get install libgsl-dev
+    - name: Install Boost
+      run: sudo apt-get install libboost-all-dev
     - name: Make COMPAS
       run: make
       working-directory: ./src

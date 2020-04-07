@@ -5,10 +5,12 @@ on:
     branches:
       - master
       - dev
+      - Trying-out-CI
   pull_request:
     branches: 
       - master
       - dev
+      - Trying-out-CI
 
 jobs:
 #  build_ubuntu:

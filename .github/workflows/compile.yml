@@ -13,13 +13,24 @@ on:
       - Trying-out-CI
 
 jobs:
-  
-# Finish adding ubuntu build
-#   build_ubuntu:
-#     runs-on: ubuntu-latest
+
+  # Add build_redhat, no redhat virtual environment currently supported by GitHub Actions
+
+  build_ubuntu:
+    runs-on: ubuntu-latest
     
-#     steps:
-#     - uses: actions/checkout@v2
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install g++ compiler
+      run: apt-get install g++
+    - name: Install GSL
+      run: apt-get install libgsl-dev
+    - name: Make COMPAS
+      run: make
+      working-directory: ./src
+    - name: Run COMPAS
+      run: ./COMPAS -n 1000 --random-seed 0
+      working-directory: ./src
 
   build_macos:
     runs-on: macos-latest

@@ -22,9 +22,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install g++ compiler
-      run: apt-get install g++
+      run: sudo apt-get install g++
     - name: Install GSL
-      run: apt-get install libgsl-dev
+      run: sudo apt-get install libgsl-dev
     - name: Make COMPAS
       run: make
       working-directory: ./src

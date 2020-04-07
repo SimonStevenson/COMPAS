@@ -1,0 +1,54 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+    branches: 
+      - master
+      - dev
+
+jobs:
+  build_ubuntu:
+    runs-on: ubuntu-latest
+
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: install_gsl
+#       run: npm 
+#     - name: install_boost
+#       run: npm i @boost/core #npm i boost
+#     - name: make
+#       run: make -j $(nproc)
+#     - name: make_clean
+#       run: make clean 
+#     - name: makefast
+#       run: make fast -j $(nproc)
+#     - name: run_compas
+#       run: ./COMPAS -n 1000 --random-seed 0
+
+  build_macos:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: install_gsl
+      run: brew install gsl
+    - name: install_boost
+      run: brew install boost
+    - name: wherewe
+      run: pwd
+    - name: changedirectory
+      run: cd ./src
+    - name: make
+      run: make -j $(nproc)
+    - name: make_clean
+      run: make clean 
+    - name: makefast
+      run: make fast -j $(nproc)
+    - name: run_compas
+      run: ./COMPAS -n 1000 --random-seed 0
+
+  

@@ -716,7 +716,8 @@ enum class ERROR: int {
     UNKNOWN_CE_ACCRETION_PRESCRIPTION,                              // unknown common envelope Accretion Prescription
     UNKNOWN_CE_LAMBDA_PRESCRIPTION,                                 // unknown common envelope Lambda Prescription
     UNKNOWN_CE_ZETA_PRESCRIPTION,                                   // unknown common envelope Zeta prescription
-    UNKNOWN_COMMON_ENVELOPE_PRESCRIPTION,                           // unknown Common Envelope Prescription
+    UNKNOWN_COMMON_ENVELOPE_PRESCRIPTION,                           // unknown common envelope prescription
+    UNKNOWN_CONVECTIVE_ENVELOPE_PRESCRIPTION,                       // unknown convective envelope prescription
     UNKNOWN_ECCENTRICITY_DISTRIBUTION,                              // unknown eccentricity distribution
     UNKNOWN_INITIAL_MASS_FUNCTION,                                  // unknown initial mass function
     UNKNOWN_KICK_DIRECTION_DISTRIBUTION,                            // unknown kick direction distribution
@@ -829,6 +830,7 @@ const COMPASUnorderedMap<ERROR, std::tuple<ERROR_SCOPE, std::string>> ERROR_CATA
     { ERROR::UNKNOWN_CE_LAMBDA_PRESCRIPTION,                        { ERROR_SCOPE::ALWAYS,              "Unknown common envelope lambda prescription" }},
     { ERROR::UNKNOWN_CE_ZETA_PRESCRIPTION,                          { ERROR_SCOPE::ALWAYS,              "Unknown common envelope Zeta prescription" }},
     { ERROR::UNKNOWN_COMMON_ENVELOPE_PRESCRIPTION,                  { ERROR_SCOPE::ALWAYS,              "Unknown common envelope prescription" }},
+    { ERROR::UNKNOWN_CONVECTIVE_ENVELOPE_PRESCRIPTION,             { ERROR_SCOPE::ALWAYS,              "Unknown convective envelope prescription" }},
     { ERROR::UNKNOWN_ECCENTRICITY_DISTRIBUTION,                     { ERROR_SCOPE::ALWAYS,              "Unknown eccentricity distribution" }},
     { ERROR::UNKNOWN_INITIAL_MASS_FUNCTION,                         { ERROR_SCOPE::ALWAYS,              "Unknown initial mass function (IMF)" }},
     { ERROR::UNKNOWN_KICK_DIRECTION_DISTRIBUTION,                   { ERROR_SCOPE::ALWAYS,              "Unknown kick direction distribution" }},
@@ -989,6 +991,12 @@ const COMPASUnorderedMap<COMMON_ENVELOPE_PRESCRIPTION, std::string> COMMON_ENVEL
     { COMMON_ENVELOPE_PRESCRIPTION::STABLE_HG,      "STABLE_HG_CE" }        // HG donors onto compact object are stable Pavlovski+ 2016
 };
 
+// Convective envelope prescriptions
+enum class CONVECTIVE_ENVELOPE_PRESCRIPTION: int { STELLAR_TYPE, EFFECTIVE_TEMPERATURE };
+const COMPASUnorderedMap<CONVECTIVE_ENVELOPE_PRESCRIPTION, std::string> CONVECTIVE_ENVELOPE_PRESCRIPTION_LABEL = {
+    { CONVECTIVE_ENVELOPE_PRESCRIPTION::STELLAR_TYPE,  "STELLAR_TYPE" },
+    { CONVECTIVE_ENVELOPE_PRESCRIPTION::EFFECTIVE_TEMPERATURE, "EFFECTIVE_TEMPERATURE" }
+};
 
 // Logfile delimiters
 enum class DELIMITER: int { TAB, SPACE, COMMA };

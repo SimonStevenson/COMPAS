@@ -112,6 +112,9 @@ public:
 
     CE_ZETA_PRESCRIPTION                        CommonEnvelopeZetaPrescription() const                                  { return commonEnvelopeZetaPrescription; }
 
+    CONVECTIVE_ENVELOPE_PRESCRIPTION            ConvectiveEnvelopePrescription() const                                { return convectiveEnvelopePrescription; }
+    double                                      ConvectiveEnvelopeThresholdTemperature() const {return convectiveEnvelopeThresholdTemperature; }
+    
     vector<string>                              DebugClasses() const                                                    { return debugClasses; }
     int                                         DebugLevel() const                                                      { return debugLevel; }
     bool                                        DebugToFile() const                                                     { return debugToFile; }
@@ -533,7 +536,12 @@ private:
 	bool                                        revisedEnergyFormalismNandezIvanova	= false;				    // Use the revised energy formalism from Nandez & Ivanova 2016 (default = false)
 	double                                      maximumMassDonorNandezIvanova;								    // Maximum mass allowed to use the revised energy formalism in Msol (default = 2.0)
 	double                                      commonEnvelopeRecombinationEnergyDensity;					    // Factor using to calculate the binding energy depending on the mass of the envelope. (default = 1.5x10^13 ergs/g)
+    
+    // Convective envelope prescription
+    CONVECTIVE_ENVELOPE_PRESCRIPTION            convectiveEnvelopePrescription;   
+    string                                      convectiveEnvelopePrescriptionString;
 
+    double                                      convectiveEnvelopeThresholdTemperature;
 
     //  Adaptive Importance Sampling options
     bool                                        AISexploratoryPhase;                                            // Flag if we want to run Exploratory phase of Adaptive Importance Sampling // Floor

@@ -429,6 +429,11 @@ void Options::InitialiseMemberVariables(void) {
 	commonEnvelopeZetaPrescription                                  = CE_ZETA_PRESCRIPTION::SOBERMAN;					                                // Which prescription to use for calculating CE zetas
 	commonEnvelopeZetaPrescriptionString                            = CE_ZETA_PRESCRIPTION_LABEL.at(commonEnvelopeZetaPrescription);				    // String containing which prescription to use for calculating CE zetas
 
+    // Prescription for determining whether envelope is radiative or convective
+    convectiveEnvelopePrescription                                  = CONVECTIVE_ENVELOPE_PRESCRIPTION::STELLAR_TYPE;
+    convectiveEnvelopePrescriptionString                            = CONVECTIVE_ENVELOPE_PRESCRIPTION_LABEL.at(convectiveEnvelopePrescription);                    // String containing which prescription to use 
+    convectiveEnvelopeThresholdTemperature                          = 4000; // The threshold effective temperature (in K) for an evolved stars envelope to be convective
+
 	zetaAdiabaticArbitrary                                          = 10000.0;                                                                          // large value, which will favour stable MT
 	zetaThermalArbitrary                                            = 10000.0;                                                                          // large value, which will favour stable MT
     zetaMainSequence 	                                            = 2.0;
@@ -814,6 +819,10 @@ void Options::SetToFiducialValues(void) {
 	commonEnvelopeZetaPrescription                                  = CE_ZETA_PRESCRIPTION::SOBERMAN;					                                // Which prescription to use for calculating CE zetas
 	commonEnvelopeZetaPrescriptionString                            = CE_ZETA_PRESCRIPTION_LABEL.at(commonEnvelopeZetaPrescription);					// String containing which prescription to use for calculating CE zetas
 
+    // Prescription for determining whether envelope is radiative or convective
+    convectiveEnvelopePrescription                                  = CONVECTIVE_ENVELOPE_PRESCRIPTION::STELLAR_TYPE;
+    convectiveEnvelopePrescriptionString                            = CONVECTIVE_ENVELOPE_PRESCRIPTION_LABEL.at(convectiveEnvelopePrescription);                    // String containing which prescription to use 
+    convectiveEnvelopeThresholdTemperature                          = 4000; // The threshold effective temperature (in K) for an evolved stars envelope to be convective
 
 	zetaAdiabaticArbitrary                                          = 10000.0;                                                                          // large value, which will favour stable MT
 	zetaThermalArbitrary                                            = 10000.0;                                                                          // large value, which will favour stable MT
@@ -1165,6 +1174,9 @@ COMMANDLINE_STATUS Options::CommandLineSorter(int argc, char* argv[]) {
 			("common-envelope-lambda-prescription",                         po::value<string>(&commonEnvelopeLambdaPrescriptionString)->default_value(commonEnvelopeLambdaPrescriptionString),                                          ("CE lambda prescription (options: LAMBDA_FIXED, LAMBDA_LOVERIDGE, LAMBDA_NANJING, LAMBDA_KRUCKOW, LAMBDA_DEWI), default = " + commonEnvelopeLambdaPrescriptionString + ")").c_str())
 		    ("common-envelope-mass-accretion-prescription",                 po::value<string>(&commonEnvelopeMassAccretionPrescriptionString)->default_value(commonEnvelopeMassAccretionPrescriptionString),                            ("Assumption about whether NS/BHs can accrete mass during common envelope evolution (options: ZERO, CONSTANT, UNIFORM, MACLEOD), default = " + commonEnvelopeMassAccretionPrescriptionString + ")").c_str())
 			("common-envelope-zeta-prescription",                           po::value<string>(&commonEnvelopeZetaPrescriptionString)->default_value(commonEnvelopeZetaPrescriptionString),                                              ("Prescription for CE zeta (default = " + commonEnvelopeZetaPrescriptionString + ")").c_str())
+            ("convective-envelope-prescription",                           po::value<string>(&convectiveEnvelopePrescriptionString)->default_value(convectiveEnvelopePrescriptionString),                                              ("Prescription used to determine whether envelopes are radiative or convective (default = " + convectiveEnvelopePrescriptionString + ")").c_str())
+
+            ("convective-envelope-threshold-temperature",                                            po::value<double>(&convectiveEnvelopeThresholdTemperature)->default_value(convectiveEnvelopeThresholdTemperature),                                                                ("Threshold effective temperature (in K) for a star to have a convective envelope (if using the EFFECTIVE_TEMPERATURE convective-envelope-prescription, ignored otherwise) (default = " + std::to_string(convectiveEnvelopeThresholdTemperature) + ")").c_str())
 
 		    ("eccentricity-distribution,e",                                 po::value<string>(&eccentricityDistributionString)->default_value(eccentricityDistributionString),                                                          ("Initial eccentricity distribution, e (options: ZERO, FIXED, FLAT, THERMALISED, GELLER+2013), default = " + eccentricityDistributionString + ")").c_str())
 
@@ -1411,6 +1423,7 @@ COMMANDLINE_STATUS Options::CommandLineSorter(int argc, char* argv[]) {
             COMPLAIN_IF(!vm["common-envelope-mass-accretion-constant"].defaulted() && commonEnvelopeMassAccretionConstant < 0.0, "CE mass accretion constant (--common-envelope-mass-accretion-constant) < 0");
             COMPLAIN_IF(!vm["common-envelope-mass-accretion-max"].defaulted() && commonEnvelopeMassAccretionMax < 0.0, "Maximum accreted mass (--common-envelope-mass-accretion-max) < 0");
             COMPLAIN_IF(!vm["common-envelope-mass-accretion-min"].defaulted() && commonEnvelopeMassAccretionMin < 0.0, "Minimum accreted mass (--common-envelope-mass-accretion-min) < 0");
+            COMPLAIN_IF(!vm["convective-envelope-threshold-temperature"].defaulted() && convectiveEnvelopeThresholdTemperature < 0.0, "Threshold temperature (in K) for convective envelope (--convective-envelope-threshold-temperature) < 0")
 
             COMPLAIN_IF(debugLevel < 0, "Debug level (--debug-level) < 0");
 

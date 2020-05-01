@@ -81,6 +81,9 @@ protected:
 
     double       ChooseTimestep(const double p_Time);
 
+
+    ENVELOPE     DetermineEnvelopeTypeStellarType();
+    ENVELOPE     DetermineEnvelopeTypeEffectiveTemperature();
     ENVELOPE     DetermineEnvelopeType();
     ENVELOPE     DetermineEnvelopeTypeHurley2002()                              { return ENVELOPE::CONVECTIVE; }                                                            // Always CONVECTIVE
 

@@ -724,20 +724,30 @@ void HG::UpdateAgeAfterMassLoss() {
 //                                                                                   //
 ///////////////////////////////////////////////////////////////////////////////////////
 
+/*
+* Determine envelope type (convective or radiative) based on the effective temperature
+* of the star
+*/
+ENVELOPE HG::DetermineEnvelopeTypeEffectiveTemperature(){
+
+    ENVELOPE envelope = ENVELOPE::RADIATIVE; // default envelope type is RADIATIVE
+    
+    if (utils::Compare(m_Temperature, OPTIONS->ConvectiveEnvelopeThresholdTemperature()) > 0){
+        envelope = ENVELOPE::RADIATIVE;
+    }
+    else{
+        envelope = ENVELOPE::CONVECTIVE;
+    }
+    return envelope;
+}
 
 /*
- * Determine the star's envelope type.
- *
- * Some calculations on this can be found in sec. 2.3.4 of Belczynski et al. 2008.  For now, we will only do the calculation using stellarType.
- *
- *
- * ENVELOPE DetermineEnvelopeType()
- *
- * @return                                      ENVELOPE::{ RADIATIVE, CONVECTIVE, REMNANT }
- */
-ENVELOPE HG::DetermineEnvelopeType() {
+ * Some calculations on this can be found in sec. 2.3.4 of Belczynski et al. 2008.  
+ * For now, we will only do the calculation using stellarType.
+*/
+ENVELOPE HG::DetermineEnvelopeTypeStellarType(){
 
-    ENVELOPE envelope = ENVELOPE::RADIATIVE;                                                        // default envelope type  is RADIATIVE
+    ENVELOPE envelope = ENVELOPE::RADIATIVE;                                                        // default envelope type is RADIATIVE
 
     switch (OPTIONS->CommonEnvelopeHertzsprungGapDonor()) {                                         // which common envelope prescription?
 
@@ -752,6 +762,43 @@ ENVELOPE HG::DetermineEnvelopeType() {
 
         default:                                                                                    // unknown prescription - use default envelope type
             SHOW_WARN(ERROR::UNKNOWN_COMMON_ENVELOPE_PRESCRIPTION, "Using Envelope = RADIATIVE");   // show warning
+    }
+
+    return envelope;
+
+}
+
+/*
+ * Determine the star's envelope type.
+ *
+ *
+ * ENVELOPE DetermineEnvelopeType()
+ *
+ * @return                                      ENVELOPE::{ RADIATIVE, CONVECTIVE, REMNANT }
+ */
+ENVELOPE HG::DetermineEnvelopeType() {
+
+    ENVELOPE envelope = ENVELOPE::RADIATIVE;                                                        // default envelope type is RADIATIVE
+
+    // Which convective envelope prescription
+    switch (OPTIONS->ConvectiveEnvelopePrescription()) {
+
+        case CONVECTIVE_ENVELOPE_PRESCRIPTION::STELLAR_TYPE:
+
+            envelope = DetermineEnvelopeTypeStellarType();
+
+            break;
+
+        case CONVECTIVE_ENVELOPE_PRESCRIPTION::EFFECTIVE_TEMPERATURE:
+
+            envelope = DetermineEnvelopeTypeEffectiveTemperature();
+
+            break;
+
+        default:
+            // unknown prescription - use default envelope type
+            SHOW_WARN(ERROR::UNKNOWN_COMMON_ENVELOPE_PRESCRIPTION, "Using Envelope = RADIATIVE");   // show warning
+
     }
 
     return envelope;

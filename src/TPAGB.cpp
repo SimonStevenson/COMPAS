@@ -55,6 +55,61 @@ void TPAGB::CalculateTimescales(const double p_Mass, DBL_VECTOR &p_Timescales) {
 #undef timescales
 }
 
+// Do I need these two, or do they get inherited from HG/CHeB/EAGB?
+/*
+* Determine envelope type based on stars effective temperature
+*/
+ENVELOPE TPAGB::DetermineEnvelopeTypeEffectiveTemperature(){
+
+    ENVELOPE envelope = ENVELOPE::RADIATIVE; // default envelope type is RADIATIVE
+    
+    // By default, temperature is in units of Tsol, so multiply by Tsol to compare to threshold
+    if (utils::Compare(m_Temperature * TSOL, OPTIONS->ConvectiveEnvelopeThresholdTemperature()) > 0){
+        envelope = ENVELOPE::RADIATIVE;
+    }
+    else{
+        envelope = ENVELOPE::CONVECTIVE;
+    }
+    return envelope;
+
+}
+
+/*
+ * Determine envelope type based on user choice of prescription
+ * 
+ * ENVELOPE DetermineEnvelopeType()
+ *
+ * @return                                      ENVELOPE::{ RADIATIVE, CONVECTIVE, REMNANT }
+ */
+ENVELOPE TPAGB::DetermineEnvelopeType(){
+
+    ENVELOPE envelope = ENVELOPE::RADIATIVE;                                                        // default envelope type is RADIATIVE
+
+    // Which convective envelope prescription
+    switch (OPTIONS->ConvectiveEnvelopePrescription()) {
+
+        case CONVECTIVE_ENVELOPE_PRESCRIPTION::STELLAR_TYPE:
+
+            envelope = DetermineEnvelopeTypeStellarType();
+
+            break;
+
+        case CONVECTIVE_ENVELOPE_PRESCRIPTION::EFFECTIVE_TEMPERATURE:
+
+            envelope = DetermineEnvelopeTypeEffectiveTemperature();
+
+            break;
+
+        default:
+            // unknown prescription - use default envelope type
+            SHOW_WARN(ERROR::UNKNOWN_COMMON_ENVELOPE_PRESCRIPTION, "Using Envelope = RADIATIVE");   // show warning
+
+    }
+
+    return envelope;
+
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //                                                                                   //

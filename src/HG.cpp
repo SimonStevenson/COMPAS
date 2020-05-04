@@ -731,8 +731,9 @@ void HG::UpdateAgeAfterMassLoss() {
 ENVELOPE HG::DetermineEnvelopeTypeEffectiveTemperature(){
 
     ENVELOPE envelope = ENVELOPE::RADIATIVE; // default envelope type is RADIATIVE
-    
-    if (utils::Compare(m_Temperature, OPTIONS->ConvectiveEnvelopeThresholdTemperature()) > 0){
+
+    // By default, temperature is in units of Tsol, so multiply by Tsol to compare to threshold
+    if (utils::Compare(m_Temperature * TSOL, OPTIONS->ConvectiveEnvelopeThresholdTemperature()) > 0){
         envelope = ENVELOPE::RADIATIVE;
     }
     else{

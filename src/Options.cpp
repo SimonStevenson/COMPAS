@@ -1174,8 +1174,8 @@ COMMANDLINE_STATUS Options::CommandLineSorter(int argc, char* argv[]) {
 			("common-envelope-lambda-prescription",                         po::value<string>(&commonEnvelopeLambdaPrescriptionString)->default_value(commonEnvelopeLambdaPrescriptionString),                                          ("CE lambda prescription (options: LAMBDA_FIXED, LAMBDA_LOVERIDGE, LAMBDA_NANJING, LAMBDA_KRUCKOW, LAMBDA_DEWI), default = " + commonEnvelopeLambdaPrescriptionString + ")").c_str())
 		    ("common-envelope-mass-accretion-prescription",                 po::value<string>(&commonEnvelopeMassAccretionPrescriptionString)->default_value(commonEnvelopeMassAccretionPrescriptionString),                            ("Assumption about whether NS/BHs can accrete mass during common envelope evolution (options: ZERO, CONSTANT, UNIFORM, MACLEOD), default = " + commonEnvelopeMassAccretionPrescriptionString + ")").c_str())
 			("common-envelope-zeta-prescription",                           po::value<string>(&commonEnvelopeZetaPrescriptionString)->default_value(commonEnvelopeZetaPrescriptionString),                                              ("Prescription for CE zeta (default = " + commonEnvelopeZetaPrescriptionString + ")").c_str())
-            ("convective-envelope-prescription",                           po::value<string>(&convectiveEnvelopePrescriptionString)->default_value(convectiveEnvelopePrescriptionString),                                              ("Prescription used to determine whether envelopes are radiative or convective (default = " + convectiveEnvelopePrescriptionString + ")").c_str())
-
+            ("convective-envelope-prescription",                           po::value<string>(&convectiveEnvelopePrescriptionString)->default_value(convectiveEnvelopePrescriptionString),                                              ("Prescription used to determine whether envelopes are radiative or convective (options: STELLAR_TYPE or EFFECTIVE_TEMPERATURE, default = " + convectiveEnvelopePrescriptionString + ")").c_str())
+            
             ("convective-envelope-threshold-temperature",                                            po::value<double>(&convectiveEnvelopeThresholdTemperature)->default_value(convectiveEnvelopeThresholdTemperature),                                                                ("Threshold effective temperature (in K) for a star to have a convective envelope (if using the EFFECTIVE_TEMPERATURE convective-envelope-prescription, ignored otherwise) (default = " + std::to_string(convectiveEnvelopeThresholdTemperature) + ")").c_str())
 
 		    ("eccentricity-distribution,e",                                 po::value<string>(&eccentricityDistributionString)->default_value(eccentricityDistributionString),                                                          ("Initial eccentricity distribution, e (options: ZERO, FIXED, FLAT, THERMALISED, GELLER+2013), default = " + eccentricityDistributionString + ")").c_str())
@@ -1298,6 +1298,14 @@ COMMANDLINE_STATUS Options::CommandLineSorter(int argc, char* argv[]) {
             if (!vm["common-envelope-zeta-prescription"].defaulted()) {                                                                 // common envelope zeta prescription
                 std::tie(found, commonEnvelopeZetaPrescription) = utils::GetMapKey(commonEnvelopeZetaPrescriptionString, CE_ZETA_PRESCRIPTION_LABEL, commonEnvelopeZetaPrescription);
                 COMPLAIN_IF(!found, "Unknown CE Zeta Prescription");
+            }
+
+            if (!vm["convective-envelope-prescription"].defaulted()) {
+
+                // convective envelope prescription
+                std::tie(found, convectiveEnvelopePrescription) = utils::GetMapKey(convectiveEnvelopePrescriptionString, CONVECTIVE_ENVELOPE_PRESCRIPTION_LABEL, convectiveEnvelopePrescription);
+                COMPLAIN_IF(!found, "Unknown convective envelope prescription");
+
             }
 
             if (!vm["eccentricity-distribution"].defaulted()) {                                                                         // eccentricity distribution
